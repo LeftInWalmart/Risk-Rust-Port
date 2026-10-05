@@ -1,0 +1,15 @@
+key,value
+game_id,SLUS-00616
+title,Risk: The Game of Global Domination (USA)
+platform,"Sony PlayStation (MIPS R3000A, little endian)"
+engine,"Hasbro Interactive game code + PsyQ 4.x libraries (libapi, libc, libetc, libgpu, libgte, libcd, libspu/libsnd, libpress, libmcrd, libtap)"
+exe,SLUS_006.16
+entry_point,0x80061F9C
+gp,0x800A2C80
+text,0x80010000+0x94800
+stack,0x801FFFF0
+system_cnf,BOOT = cdrom:\SLUS_006.16;1 TCB = 4 EVENT = 10 STACK = 800FFFF0
+exe_sha1,b1207db161e1c93d7873597bdbd83331db2f33d5
+exe_size,610304
+symbols,none shipped; BIOS call stubs named by tools/find_stubs.py
+toolchain,"Ghidra 12.1.4 (ELF wrapper from tools/psx2elf.py, MIPS:LE:32:default) via ghidra-cli 0.2.2"

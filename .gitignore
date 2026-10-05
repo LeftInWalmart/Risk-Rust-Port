@@ -1,0 +1,30 @@
+# Public repository: only the tools, the hand-written runtime / app, the tests and the hand-curated
+# sheets. Everything generated from the game's executable (it contains the game's code and data)
+# stays local and is regenerated from your own disc image (see README).
+
+# Sheets generated from the game (instructions, memory image, symbols, strings, metadata)
+/sheets/*
+!/sheets/hle.csv
+!/sheets/meta.csv
+!/sheets/manual_names.csv
+
+# Ghidra C projection
+/src/
+
+# Generated Rust: the recompiled crates, the memory image and the dispatch table, plus the
+# generated workspace / risk-recomp manifests (written by tools/gen_rust.py)
+/rust/crates/recomp/
+/rust/crates/risk-recomp/mem/
+/rust/crates/risk-recomp/src/table.rs
+/rust/crates/risk-recomp/Cargo.toml
+/rust/Cargo.toml
+/rust/Cargo.lock
+
+# Build output, saves and diagnostics
+/rust/target/
+memcard/
+*.log
+*.bin
+*.mcd
+*.png
+__pycache__/

@@ -1,0 +1,33 @@
+addr,name,status,evidence
+0x80061F9C,__start,named,PS-X EXE entry (pc0); clears BSS 0x800A4120..0x801084A0, sets sp from _ramsize, InitHeap, calls main
+0x8003EDD8,main,named,called by __start after InitHeap
+0x8006EA70,VSync,named,libetc: reads GPUSTAT and RCnt1 base; waits through v_wait; returns hblank count
+0x8006EBB8,v_wait,named,"libetc static: spins until Vcount (0x8009067C) >= a0, timeout a1<<15 iterations then puts ""VSync: timeout"" + ChangeClearPad(0)/ChangeClearRCnt(3,0)"
+0x8006EDEC,ResetCallback,named,"libetc: setjmp + HookEntryInt(&intr_jmpbuf), installs the interrupt dispatcher"
+0x8006EEC8,trapIntr,named,"libetc static: interrupt dispatcher (I_STAT & I_MASK -> callback table 0x8008F5C4), ends with ReturnFromException"
+0x8006F0B0,InterruptCallback,named,"libetc: (irq, func) -> old func; updates I_MASK and ChangeClearPad/ChangeClearRCnt"
+0x8006F204,StopCallback,named,libetc: ResetEntryInt and mask save
+0x8006F2B0,RestartCallback,named,libetc: HookEntryInt again and mask restore
+0x8006E9D8,PadInit,named,libetc legacy pad: PAD_init(0x20000001) path (unused)
+0x8006EA28,PadRead,named,libetc legacy pad: PAD_dr / ~buffer (unused)
+0x8007B574,_tap_read_port,named,"libtap static: bit-bangs SIO0 (01h 42h ...), waits for IRQ7 /ACK after each byte"
+0x8007C3D8,_tap_vsync_handler,named,libtap: second function of the priority-1 interrupt chain element (reads both ports)
+0x8007C4E4,InitTAP,named,"libtap: prints ""PS-X Control TAP Driver Ver 3.0"", sets the receive buffers"
+0x8007C5AC,StartTAP,named,libtap: SysEnqIntRP(1) + I_MASK bit 0 + ChangeClearRCnt(3,0)
+0x8007C914,_mc_info_state,named,libmcrd static: _card_info state machine (SwCARD events)
+0x8007CB70,_mc_accept_state,named,libmcrd static: _new_card/_card_write(0x3F) + _card_load state machine
+0x8007E3AC,MemCardInit,named,libmcrd: InitCARD + StartCARD + _bu_init
+0x8007E3DC,MemCardStart,named,libmcrd: opens the 8 SwCARD/HwCARD events
+0x80062334,_spu_init_event,named,libspu: OpenEvent(0xF0000009 HwSPU) for transfer completion
+0x8007AE9C,MDEC_in_sync,named,"libpress: waits while MDEC status bit 29 (busy), 0x100000 iterations then ""MDEC_in_sync timeout"" + MDEC reset"
+0x8007AF34,MDEC_out_sync,named,"libpress: waits while DMA1 CHCR bit 24 (busy), 0x100000 iterations then ""MDEC_out_sync timeout"" + MDEC reset"
+0x8007AD78,_mdec_in,named,libpress: command word to 0x1F801820 then DMA0 of (size>>5) 32-word blocks
+0x8007AE0C,_mdec_out,named,libpress: DMA1 of (size>>5) 32-word blocks
+0x8007AB20,DecDCTin,named,libpress: sets output depth bits from mode and calls _mdec_in(buf + header size)
+0x8007AB9C,DecDCTout,named,libpress: _mdec_out
+0x8007AC7C,DecDCTReset,named,"libpress: MDEC reset, mode 0 also loads the quant and scale tables"
+0x8007B148,DecDCTvlc,named,"libpress: STR (v2/v3) bitstream -> MDEC run-level codes, resumable (DecDCTvlcSize limit at 0x8007B114)"
+0x8004F460,_play_movie,named,"game: STR movie player loop (DecDCTin / DecDCTout, slice callback 0x8004F810)"
+0x8004F810,_movie_slice_callback,named,game: DecDCTout completion callback - next 16-pixel slice or frame done + LoadImage
+0x80073E58,StGetNext,named,"libcd streaming: next complete frame from the ring buffer (0 = got one), polled by the movie player in loops of up to 0x800000 iterations"
+0x8004FC2C,_movie_wait_frame,named,game: waits for the slice callback's frame-done flag (+0x34) with a 0x800000 iteration limit
